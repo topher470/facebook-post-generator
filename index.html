@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chat GPT</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+</head>
+
+<style>
+    * {
+        font-family: 'Roboto';
+        font-size: 16px;
+    }
+    .container{
+        margin-top: 1rem;
+    }
+    button:hover{
+        opacity: 0.5;
+    }
+</style>
+
+<body class="container">
+
+    <h2 style="color: rgb(9, 2, 76);text-align: center;font-weight: bolder;">
+        FACEBOOK POST GENERATOR
+    </h2>
+    
+    <div class="text-container">
+    <form>
+        <br>
+        Title
+        <br><br>
+        <input type="text" class="form-control" name="question" id="question">
+        <br>
+        <button class="btn btn-primary" type="button" name="generate" onclick="text()">Submit</button>
+        <br><br>
+    </form>
+
+    <div class="container-textarea">
+
+        <textarea class="form-control rounded-0" rows="10" id="output">
+
+        </textarea>
+    </div>
+    </div>
+
+    <div class="image-container">
+        <form>
+            <br>
+            Image title
+            <br><br>
+            <input type="text" class="form-control" name="image-question" id="image-question">
+            <br>
+            <button class="btn btn-primary" type="button" name="generate-image" onclick="image()">Generate Image</button>
+            <br><br>
+        </form>
+    
+        <div class="container-textarea">
+<!--     
+            <div id="image-output">
+    
+            </div> -->
+            <img src="" id="myImg">
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+
+        var key = '';
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "key.txt", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                key = xhr.responseText;
+            }
+        };
+        xhr.send();
+
+
+        function text() {
+            // console.log("hello")
+            var url = "https://api.openai.com/v1/completions";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url);
+
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader(
+                "Authorization",
+                `Bearer ${key}`
+            );
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    console.log(xhr.status);
+                    console.log(xhr.responseText);
+                    let response = xhr.responseText;
+                    response = JSON.parse(response);
+
+                    console.log(response);
+
+                    document.getElementById("output").innerHTML =
+                        response["choices"][0]["text"];
+                }
+            };
+
+            var question = document.getElementById("question").value;
+            prompt= "Create facebook post of 200 words for title: " + question + "with emoji and no picture"
+          
+
+         
+            prompt = JSON.parse(JSON.stringify(prompt));
+
+
+            var data = {
+                model: "text-davinci-003",
+                prompt: prompt,
+                temperature: 0.7,
+                max_tokens: 2048,
+                top_p: 1,
+                frequency_penalty: 0,
+                presence_penalty: 0,
+            };
+
+            data = JSON.stringify(data);
+
+            xhr.send(data);
+        }
+    
+        function image() {
+            // console.log("hello")
+            var url = "https://api.openai.com/v1/images/generations";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url);
+
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader(
+                "Authorization",
+                `Bearer ${key}`
+            );
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    console.log(xhr.status);
+                    console.log(xhr.responseText);
+                    let response = xhr.responseText;
+                    response = JSON.parse(response);
+
+                    let imgOutput=response["data"][0]["url"];
+
+                    document.getElementById("myImg").src=imgOutput
+                }
+            };
+
+            var question = document.getElementById("image-question").value;
+            prompt= question
+          
+
+         
+            prompt = JSON.parse(JSON.stringify(question));
+
+
+            var data = {
+                // model: "text-davinci-003",
+                prompt: prompt,
+                n:1,
+                size:"512x512"
+                // temperature: 0.7,
+                // max_tokens: 2048,
+                // top_p: 1,
+                // frequency_penalty: 0,
+                // presence_penalty: 0,
+            };
+
+            data = JSON.stringify(data);
+
+            xhr.send(data);
+        }
+    </script>
+
+</body>
+
+</html>
