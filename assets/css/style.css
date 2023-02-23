@@ -992,7 +992,7 @@ h6 {
   color: #1a1a1a;
   font-size: 20px;
 }
-.thank-content .thank-btn {
+.thank-btn {
   color: #fff;
   height: 75px;
   width: 245px;
@@ -1003,7 +1003,7 @@ h6 {
   line-height: 75px;
   background-color: #7650e0;
 }
-.thank-content .thank-btn a {
+.thank-btn a {
   width: 100%;
   display: block;
 }
@@ -1103,7 +1103,7 @@ h6 {
   }
 
   .actions li,
-.thank-content .thank-btn {
+.thank-btn {
     width: 160px;
     height: 60px;
     font-size: 18px;
@@ -1297,7 +1297,7 @@ h6 {
     font-size: 16px;
   }
 
-  .actions li, .thank-content .thank-btn {
+  .actions li, .thank-btn {
     height: 50px;
     width: 120px;
     line-height: 50px;
