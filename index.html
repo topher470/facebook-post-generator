@@ -40,7 +40,7 @@
 
         .center {
             position: absolute;
-            top: 0;
+            top: -70rem;
             bottom: 0;
             left: 0;
             right: 0;
@@ -255,14 +255,16 @@
                     </div>
                     <!-- step 2 -->
                     <div class="multisteps-form__panel" data-animation="scaleIn">
-                        <div id="loader" class="center"></div>
+                     
                         <div style="display: flex;gap: 1rem;">
                             <a class="thank-btn text-uppercase" href="index.html" style="color:white !important; text-align: center !important;">Accueil</a>
                             <button class="thank-btn text-uppercase" style="border: none;"
                                 id="img-button">télécharger l'image</button>
                         </div>
                         <br>
+                  
                         <div class="wizard-forms form-step-3">
+                            <div id="loader" class="center"></div>
                             <span class="step-no position-absolute">Étape 3</span>
                             <div class="wizard-progress">
                                 <span>3 sur 3 Complété</span>
@@ -467,7 +469,9 @@
         btnDownload.addEventListener('click', () => {
             let imagePath = img.getAttribute('src');
             // let fileName = getFileName(imagePath);
-            saveAs(imagePath, "output.png");
+            if(imagePath){
+                saveAs(imagePath, "output.png");
+            }
         });
     </script>
        <script src="assets/js/FileSaver.min.js"></script>
