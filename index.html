@@ -21,9 +21,37 @@
     <link href="assets/css/colors/color-5.css" rel="alternate stylesheet" type="text/css" title="color-5">
 
 <body>
+    <style>
+        #loader {
+            border: 12px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 12px solid #444444;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+            visibility: hidden;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .center {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    </style>
 
 
     <div class="wrapper">
+        <img class="img-fluid" src="assets/img/postaicreator.png">
+        <br><br>
         <div class="wizard-content-1 pos-flex clearfix">
             <div class="steps d-inline-block clearfix">
                 <span class="bg-shape"></span>
@@ -227,6 +255,7 @@
                     </div>
                     <!-- step 2 -->
                     <div class="multisteps-form__panel" data-animation="scaleIn">
+                        <div id="loader" class="center"></div>
                         <div class="wizard-forms form-step-3">
                             <span class="step-no position-absolute">Étape 3</span>
                             <div class="wizard-progress">
@@ -255,9 +284,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="thank-img">
-                                        <img src="assets/img/th1.png" alt="">
-                                    </div>
                                     <div class="thank-text">
                                         <h2>Votre post est prêt !</h2>
                                         <p><span>Merci</span> d'utiliser PostAICreator </br></br> MADE WITH ❤️ IN LA
@@ -266,11 +292,13 @@
                                     <div class="thank-subscribe position-relative">
 
                                     </div>
-                                    <div class="thank-btn text-uppercase">
-                                        <a href="index.html">Accueil</a>
-                                    </div>
-                                    <div class="thank-btn text-uppercase">
-                                        <button onclick="downloadImage(image)">Download</button>
+                                    <div style="display: flex;gap: 1rem;">
+                                        <a class="thank-btn text-uppercase" href="index.html">Accueil</a>
+
+                                        <!-- </div>
+                                    <div class="thank-btn text-uppercase"> -->
+                                        <button class="thank-btn text-uppercase" style="border: none;"
+                                            id="img-button">Download</button>
                                     </div>
                                 </div>
                             </div>
@@ -348,8 +376,7 @@
             };
 
             var question = document.getElementById("question").value;
-            prompt = "Create facebook post of 200 words for title: " + question + "with emoji and no picture"
-
+            prompt = "Create facebook post of 200 words for title: " + question + "with emoji and no picture in french language"
 
 
             prompt = JSON.parse(JSON.stringify(prompt));
@@ -372,18 +399,6 @@
 
 
 
-        // async function downloadImage(imageSrc) {
-        //     const image = await fetch(imageSrc)
-        //     const imageBlog = await image.blob()
-        //     const imageURL = URL.createObjectURL(imageBlog)
-
-        //     const link = document.createElement('a')
-        //     link.href = imageURL
-        //     link.download = 'image file name here'
-        //     document.body.appendChild(link)
-        //     link.click()
-        //     document.body.removeChild(link)
-        // }
 
         function image() {
             // console.log("hello")
@@ -401,14 +416,17 @@
             // var imgo;
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
+                    document.querySelector(
+                        "#loader").style.visibility = "hidden";
                     console.log(xhr.status);
                     console.log(xhr.responseText);
                     let response = xhr.responseText;
                     response = JSON.parse(response);
 
                     let imgOutput = response["data"][0]["url"];
-                    // imgo = imgOutput;
-                    downloadImage(imgOutput)
+
+
+
                     document.getElementById("myImg").src = imgOutput
                 }
             };
@@ -438,8 +456,22 @@
             data = JSON.stringify(data);
 
             xhr.send(data);
+            document.querySelector(
+                "#loader").style.visibility = "visible";
         }
+
+        let btnDownload = document.getElementById('img-button');
+        let img = document.getElementById('myImg');
+
+
+        // Must use FileSaver.js 2.0.2 because 2.0.3 has issues.
+        btnDownload.addEventListener('click', () => {
+            let imagePath = img.getAttribute('src');
+            // let fileName = getFileName(imagePath);
+            saveAs(imagePath, "output.png");
+        });
     </script>
+       <script src="assets/js/FileSaver.min.js"></script>
 </body>
 
 </html>
