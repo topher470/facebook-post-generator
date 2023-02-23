@@ -256,14 +256,17 @@
                     </div>
                     <!-- step 2 -->
                     <div class="multisteps-form__panel" data-animation="scaleIn">
-                     
+
                         <div style="display: flex;gap: 1rem;">
-                            <a class="thank-btn text-uppercase" href="index.html" style="color:white !important; text-align: center !important;">Accueil</a>
-                            <button class="thank-btn text-uppercase" style="border: none;"
-                                id="img-button">télécharger l'image</button>
+                            <a class="thank-btn text-uppercase" href="index.html"
+                                style="color:white !important; text-align: center !important;">Accueil</a>
+
+                            <!-- <button class="text-uppercase" style="border: none;" id="img-button">télécharger
+                                l'image</button> -->
+                                <input type="button" class="thank-btn text-uppercase" style="border: none;cursor: pointer;width: fit-content;" id="img-button" value="télécharger l'image">
                         </div>
                         <br>
-                  
+
                         <div class="wizard-forms form-step-3">
                             <div id="loader" class="center"></div>
                             <span class="step-no position-absolute">Étape 3</span>
@@ -301,7 +304,7 @@
                                     <div class="thank-subscribe position-relative">
 
                                     </div>
-                           
+
                                 </div>
                             </div>
 
@@ -465,17 +468,46 @@
         let btnDownload = document.getElementById('img-button');
         let img = document.getElementById('myImg');
 
+        let input = document.getElementById('img-button');
+        let button = document.getElementById('myImg');
+
+        button.disabled = true; //setting button state to disabled
+
+        input.addEventListener("change", stateHandle);
+
+        function stateHandle() {
+            if (input.getAttribute('src') === "") {
+                button.disabled = true; //button remains disabled
+            } else {
+                button.disabled = false; //button is enabled
+            }
+        }
+
+        //       if(img.getAttribute('src')==""){
+        //     console.log("ssssssss")
+        //     btnDownload.disabled=true
+        // }
+
+        // $('#myImg').change(function () {
+        //     console.log("sss")
+        //     btnDownload.disabled=false
+
+        //     // $('#img-button').prop('disabled', false);
+        // });
+
+
+
 
         // Must use FileSaver.js 2.0.2 because 2.0.3 has issues.
         btnDownload.addEventListener('click', () => {
             let imagePath = img.getAttribute('src');
             // let fileName = getFileName(imagePath);
-            if(imagePath){
+            if (imagePath != "") {
                 saveAs(imagePath, "output.png");
             }
         });
     </script>
-       <script src="assets/js/FileSaver.min.js"></script>
+    <script src="assets/js/FileSaver.min.js"></script>
 </body>
 
 </html>
